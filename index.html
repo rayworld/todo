@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kindle TodoList</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header class="header">
+            <h1><i class="fas fa-tasks"></i> Kindle TodoList</h1>
+            <p class="subtitle">轻量级待办事项管理</p>
+        </header>
+
+        <!-- 添加新任务区域 -->
+        <div class="add-task">
+            <input type="text" id="taskInput" placeholder="输入新的待办事项...">
+            <input type="date" id="taskDate" value="">
+            <button id="addBtn" class="btn btn-primary">
+                <i class="fas fa-plus"></i> 添加
+            </button>
+        </div>
+
+        <!-- 任务统计 -->
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-number" id="totalTasks">0</span>
+                <span class="stat-label">总任务</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="pendingTasks">0</span>
+                <span class="stat-label">待完成</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-number" id="completedTasks">0</span>
+                <span class="stat-label">已完成</span>
+            </div>
+        </div>
+
+        <!-- 任务列表 -->
+        <div class="task-list-container">
+            <h2><i class="fas fa-list"></i> 待办事项</h2>
+            <div class="filter">
+                <button class="filter-btn active" data-filter="all">全部</button>
+                <button class="filter-btn" data-filter="pending">待完成</button>
+                <button class="filter-btn" data-filter="completed">已完成</button>
+            </div>
+            <ul id="taskList"></ul>
+        </div>
+
+        <!-- 历史记录 -->
+        <div class="history-container">
+            <h2><i class="fas fa-history"></i> 历史记录</h2>
+            <div class="date-filter">
+                <input type="date" id="historyDate" value="">
+                <button id="filterHistoryBtn" class="btn btn-secondary">
+                    <i class="fas fa-filter"></i> 筛选
+                </button>
+                <button id="clearHistoryBtn" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> 清空历史
+                </button>
+            </div>
+            <div id="historyList"></div>
+        </div>
+
+        <!-- 操作指南 -->
+        <div class="instructions">
+            <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+            <ul>
+                <li>点击任务前的复选框标记为完成</li>
+                <li>点击 <i class="fas fa-trash"></i> 删除任务</li>
+                <li>任务会自动保存到本地</li>
+                <li>历史记录按日期显示已完成任务</li>
+            </ul>
+        </div>
+
+        <!-- Kindle 优化提示 -->
+        <div class="kindle-tip">
+            <p><i class="fas fa-tablet-alt"></i> 此应用已针对 Kindle 8 优化</p>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
