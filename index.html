@@ -2,84 +2,139 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Kindle TodoList</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
-        <!-- 头部 -->
-        <header class="header">
-            <h1><i class="fas fa-tasks"></i> Kindle TodoList</h1>
-            <p class="subtitle">轻量级待办事项管理</p>
-        </header>
-
-        <!-- 添加新任务区域 -->
-        <div class="add-task">
-            <input type="text" id="taskInput" placeholder="输入新的待办事项...">
-            <input type="date" id="taskDate" value="">
-            <button id="addBtn" class="btn btn-primary">
-                <i class="fas fa-plus"></i> 添加
+        <!-- 标签页导航 -->
+        <div class="tab-nav">
+            <button class="tab-btn active" data-tab="tasks">
+                <i class="fas fa-tasks"></i> 任务
+            </button>
+            <button class="tab-btn" data-tab="history">
+                <i class="fas fa-history"></i> 历史
             </button>
         </div>
 
-        <!-- 任务统计 -->
-        <div class="stats">
-            <div class="stat-item">
-                <span class="stat-number" id="totalTasks">0</span>
-                <span class="stat-label">总任务</span>
+        <!-- 任务标签页 -->
+        <div id="tasks-tab" class="tab-content active">
+            <!-- 头部 -->
+            <header class="header">
+                <h1><i class="fas fa-tasks"></i> Kindle TodoList</h1>
+                <p class="subtitle">轻量级待办事项管理</p>
+            </header>
+
+            <!-- 任务统计（一行显示） -->
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-list"></i></span>
+                    <span class="stat-number" id="totalTasks">0</span>
+                    <span class="stat-label">总任务</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-clock"></i></span>
+                    <span class="stat-number" id="pendingTasks">0</span>
+                    <span class="stat-label">待完成</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-icon"><i class="fas fa-check-circle"></i></span>
+                    <span class="stat-number" id="completedTasks">0</span>
+                    <span class="stat-label">已完成</span>
+                </div>
             </div>
-            <div class="stat-item">
-                <span class="stat-number" id="pendingTasks">0</span>
-                <span class="stat-label">待完成</span>
+
+            <!-- 添加新任务区域 -->
+            <div class="add-task">
+                <input type="text" id="taskInput" placeholder="输入新的待办事项...">
+                <div class="date-input-group">
+                    <input type="text" id="taskDate" class="date-input" placeholder="选择日期" readonly>
+                    <button id="datePickerBtn" class="date-picker-btn">
+                        <i class="fas fa-calendar"></i>
+                    </button>
+                </div>
+                <button id="addBtn" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> 添加
+                </button>
             </div>
-            <div class="stat-item">
-                <span class="stat-number" id="completedTasks">0</span>
-                <span class="stat-label">已完成</span>
+
+            <!-- 自定义日期选择器（模态框） -->
+            <div id="datePickerModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3>选择日期</h3>
+                        <button class="close-btn">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="date-picker">
+                            <div class="date-picker-header">
+                                <button id="prevMonth" class="nav-btn"><i class="fas fa-chevron-left"></i></button>
+                                <h4 id="currentMonth"></h4>
+                                <button id="nextMonth" class="nav-btn"><i class="fas fa-chevron-right"></i></button>
+                            </div>
+                            <div class="date-picker-weekdays">
+                                <div>日</div>
+                                <div>一</div>
+                                <div>二</div>
+                                <div>三</div>
+                                <div>四</div>
+                                <div>五</div>
+                                <div>六</div>
+                            </div>
+                            <div id="datePickerDays" class="date-picker-days"></div>
+                            <div class="date-picker-actions">
+                                <button id="todayBtn" class="btn btn-secondary">今天</button>
+                                <button id="confirmDateBtn" class="btn btn-primary">确定</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 任务列表 -->
+            <div class="task-list-container">
+                <div class="filter">
+                    <button class="filter-btn active" data-filter="all">全部</button>
+                    <button class="filter-btn" data-filter="pending">待完成</button>
+                    <button class="filter-btn" data-filter="completed">已完成</button>
+                </div>
+                <ul id="taskList"></ul>
             </div>
         </div>
 
-        <!-- 任务列表 -->
-        <div class="task-list-container">
-            <h2><i class="fas fa-list"></i> 待办事项</h2>
-            <div class="filter">
-                <button class="filter-btn active" data-filter="all">全部</button>
-                <button class="filter-btn" data-filter="pending">待完成</button>
-                <button class="filter-btn" data-filter="completed">已完成</button>
-            </div>
-            <ul id="taskList"></ul>
-        </div>
-
-        <!-- 历史记录 -->
-        <div class="history-container">
-            <h2><i class="fas fa-history"></i> 历史记录</h2>
-            <div class="date-filter">
-                <input type="date" id="historyDate" value="">
-                <button id="filterHistoryBtn" class="btn btn-secondary">
-                    <i class="fas fa-filter"></i> 筛选
-                </button>
-                <button id="clearHistoryBtn" class="btn btn-danger">
-                    <i class="fas fa-trash"></i> 清空历史
-                </button>
+        <!-- 历史记录标签页 -->
+        <div id="history-tab" class="tab-content">
+            <div class="history-header">
+                <h2><i class="fas fa-history"></i> 历史记录</h2>
+                <div class="history-controls">
+                    <div class="date-input-group">
+                        <input type="text" id="historyDate" class="date-input" placeholder="选择日期" readonly>
+                        <button id="historyDatePickerBtn" class="date-picker-btn">
+                            <i class="fas fa-calendar"></i>
+                        </button>
+                    </div>
+                    <button id="filterHistoryBtn" class="btn btn-secondary">
+                        <i class="fas fa-filter"></i> 筛选
+                    </button>
+                    <button id="clearHistoryBtn" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> 清空
+                    </button>
+                </div>
             </div>
             <div id="historyList"></div>
         </div>
 
         <!-- 操作指南 -->
         <div class="instructions">
-            <h3><i class="fas fa-info-circle"></i> 使用说明</h3>
+            <h3><i class="fas fa-info-circle"></i> Kindle 使用提示</h3>
             <ul>
-                <li>点击任务前的复选框标记为完成</li>
-                <li>点击 <i class="fas fa-trash"></i> 删除任务</li>
-                <li>任务会自动保存到本地</li>
-                <li>历史记录按日期显示已完成任务</li>
+                <li>点击日期输入框选择日期</li>
+                <li>点击任务复选框标记完成</li>
+                <li>点击垃圾桶图标删除任务</li>
+                <li>数据自动保存到本地</li>
             </ul>
-        </div>
-
-        <!-- Kindle 优化提示 -->
-        <div class="kindle-tip">
-            <p><i class="fas fa-tablet-alt"></i> 此应用已针对 Kindle 8 优化</p>
         </div>
     </div>
 
