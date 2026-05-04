@@ -3,6 +3,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
 body {
@@ -13,55 +14,163 @@ body {
     padding: 10px;
     max-width: 600px;
     margin: 0 auto;
+    touch-action: manipulation;
 }
 
 .container {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    padding: 20px;
+    padding: 15px;
     margin-bottom: 20px;
+    min-height: 90vh;
+}
+
+/* 标签页导航 */
+.tab-nav {
+    display: flex;
+    margin-bottom: 20px;
+    border-bottom: 2px solid #eee;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: none;
+    font-size: 16px;
+    font-weight: bold;
+    color: #7f8c8d;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-btn.active {
+    color: #4CAF50;
+    border-bottom-color: #4CAF50;
+}
+
+.tab-btn:hover:not(.active) {
+    color: #3498db;
+}
+
+/* 标签页内容 */
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 /* 头部样式 */
 .header {
     text-align: center;
-    margin-bottom: 20px;
-    padding-bottom: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
     border-bottom: 2px solid #4CAF50;
 }
 
 .header h1 {
     color: #2c3e50;
-    font-size: 24px;
+    font-size: 22px;
     margin-bottom: 5px;
 }
 
 .header .subtitle {
     color: #7f8c8d;
-    font-size: 14px;
+    font-size: 13px;
+}
+
+/* 统计行样式 */
+.stats-row {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 20px;
+    background-color: #f8f9fa;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 70px;
+}
+
+.stat-icon {
+    font-size: 18px;
+    color: #4CAF50;
+    margin-bottom: 5px;
+}
+
+.stat-number {
+    font-size: 20px;
+    font-weight: bold;
+    color: #2c3e50;
+    margin-bottom: 2px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: #7f8c8d;
+    white-space: nowrap;
 }
 
 /* 添加任务区域 */
 .add-task {
     display: flex;
+    flex-direction: column;
     gap: 10px;
     margin-bottom: 20px;
-    flex-wrap: wrap;
 }
 
-.add-task input {
-    flex: 1;
+.add-task input[type="text"] {
     padding: 12px;
     border: 2px solid #ddd;
     border-radius: 5px;
     font-size: 16px;
-    min-width: 0;
+    width: 100%;
 }
 
-.add-task input:focus {
+.add-task input[type="text"]:focus {
     outline: none;
     border-color: #4CAF50;
+}
+
+.date-input-group {
+    position: relative;
+    width: 100%;
+}
+
+.date-input {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    background-color: white;
+    cursor: pointer;
+}
+
+.date-picker-btn {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #7f8c8d;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 5px;
 }
 
 /* 按钮样式 */
@@ -76,7 +185,9 @@ body {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 5px;
+    gap: 8px;
+    width: 100%;
+    min-height: 44px;
 }
 
 .btn-primary {
@@ -84,8 +195,9 @@ body {
     color: white;
 }
 
-.btn-primary:hover {
+.btn-primary:active {
     background-color: #45a049;
+    transform: scale(0.98);
 }
 
 .btn-secondary {
@@ -93,8 +205,9 @@ body {
     color: white;
 }
 
-.btn-secondary:hover {
+.btn-secondary:active {
     background-color: #2980b9;
+    transform: scale(0.98);
 }
 
 .btn-danger {
@@ -102,66 +215,32 @@ body {
     color: white;
 }
 
-.btn-danger:hover {
+.btn-danger:active {
     background-color: #c0392b;
-}
-
-/* 统计区域 */
-.stats {
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 20px;
-    background-color: #f8f9fa;
-    padding: 15px;
-    border-radius: 8px;
-}
-
-.stat-item {
-    text-align: center;
-}
-
-.stat-number {
-    display: block;
-    font-size: 24px;
-    font-weight: bold;
-    color: #2c3e50;
-}
-
-.stat-label {
-    font-size: 14px;
-    color: #7f8c8d;
+    transform: scale(0.98);
 }
 
 /* 任务列表 */
-.task-list-container, .history-container {
-    margin-bottom: 25px;
-    padding: 15px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-}
-
-.task-list-container h2, .history-container h2 {
-    color: #2c3e50;
-    margin-bottom: 15px;
-    font-size: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+.task-list-container {
+    margin-bottom: 20px;
 }
 
 .filter {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-bottom: 15px;
 }
 
 .filter-btn {
-    padding: 8px 16px;
+    flex: 1;
+    padding: 10px;
     border: 2px solid #ddd;
     background-color: white;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 14px;
     transition: all 0.3s ease;
+    min-height: 40px;
 }
 
 .filter-btn.active {
@@ -170,7 +249,16 @@ body {
     border-color: #4CAF50;
 }
 
+.filter-btn:active:not(.active) {
+    background-color: #f0f0f0;
+    transform: scale(0.98);
+}
+
 /* 任务项样式 */
+#taskList {
+    list-style: none;
+}
+
 .task-item {
     display: flex;
     align-items: center;
@@ -182,24 +270,29 @@ body {
     transition: all 0.3s ease;
 }
 
-.task-item:hover {
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+.task-item:active {
+    background-color: #f8f9fa;
 }
 
 .task-checkbox {
-    margin-right: 10px;
-    transform: scale(1.2);
+    margin-right: 12px;
+    transform: scale(1.3);
+    cursor: pointer;
+    min-width: 20px;
+    min-height: 20px;
 }
 
 .task-content {
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0;
 }
 
 .task-text {
     font-size: 16px;
     margin-bottom: 3px;
+    word-break: break-word;
 }
 
 .task-date {
@@ -215,6 +308,7 @@ body {
 .task-actions {
     display: flex;
     gap: 8px;
+    margin-left: 10px;
 }
 
 .delete-btn {
@@ -223,28 +317,204 @@ body {
     color: #e74c3c;
     cursor: pointer;
     font-size: 16px;
-    padding: 5px;
+    padding: 8px;
+    min-width: 36px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* 历史记录 */
-.date-filter {
+.delete-btn:active {
+    background-color: #ffeaea;
+    border-radius: 50%;
+}
+
+/* 模态框样式 */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.active {
+    display: flex;
+}
+
+.modal-content {
+    background-color: white;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 18px;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body {
+    padding: 15px;
+}
+
+/* 日期选择器样式 */
+.date-picker-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.nav-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #4CAF50;
+    cursor: pointer;
+    padding: 8px;
+    min-width: 36px;
+    min-height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-btn:active {
+    background-color: #f0f0f0;
+    border-radius: 50%;
+}
+
+.date-picker-header h4 {
+    margin: 0;
+    font-size: 16px;
+    color: #2c3e50;
+}
+
+.date-picker-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #7f8c8d;
+    font-size: 14px;
+}
+
+.date-picker-weekdays div {
+    padding: 8px 0;
+}
+
+.date-picker-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    margin-bottom: 15px;
+}
+
+.day {
+    text-align: center;
+    padding: 10px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.day:hover:not(.disabled):not(.selected) {
+    background-color: #f0f0f0;
+}
+
+.day.selected {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.day.today {
+    background-color: #e8f5e8;
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+.day.disabled {
+    color: #ccc;
+    cursor: not-allowed;
+}
+
+.date-picker-actions {
     display: flex;
     gap: 10px;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
+    margin-top: 15px;
 }
 
-.date-filter input {
+.date-picker-actions .btn {
     flex: 1;
-    padding: 8px;
-    border: 2px solid #ddd;
-    border-radius: 5px;
-    min-width: 0;
+    padding: 10px;
+}
+
+/* 历史记录标签页 */
+.history-header {
+    margin-bottom: 20px;
+}
+
+.history-header h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.history-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-controls .date-input-group {
+    width: 100%;
+}
+
+.history-controls .btn {
+    width: 100%;
 }
 
 .history-item {
     background-color: white;
-    padding: 10px;
+    padding: 12px;
     border-left: 4px solid #4CAF50;
     margin-bottom: 8px;
     border-radius: 0 5px 5px 0;
@@ -254,15 +524,26 @@ body {
     font-weight: bold;
     color: #2c3e50;
     margin-bottom: 5px;
+    font-size: 14px;
 }
 
 .history-task {
     color: #7f8c8d;
     font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-/* 说明和提示 */
-.instructions, .kindle-tip {
+.empty-message {
+    text-align: center;
+    color: #95a5a6;
+    padding: 30px;
+    font-size: 16px;
+}
+
+/* 说明区域 */
+.instructions {
     background-color: #e8f4f8;
     padding: 15px;
     border-radius: 8px;
@@ -270,9 +551,10 @@ body {
     border-left: 4px solid #3498db;
 }
 
-.instructions h3, .kindle-tip p {
+.instructions h3 {
     color: #2c3e50;
     margin-bottom: 10px;
+    font-size: 16px;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -281,32 +563,26 @@ body {
 .instructions ul {
     list-style-position: inside;
     color: #7f8c8d;
+    font-size: 14px;
 }
 
 .instructions li {
     margin-bottom: 5px;
 }
 
-.kindle-tip {
-    background-color: #fff3cd;
-    border-left-color: #ffc107;
-}
-
 /* 响应式调整 */
-@media (max-width: 480px) {
-    .add-task {
-        flex-direction: column;
+@media (min-width: 480px) {
+    .history-controls {
+        flex-direction: row;
+        align-items: center;
     }
     
-    .add-task input, .add-task button {
-        width: 100%;
+    .history-controls .date-input-group {
+        flex: 1;
     }
     
-    .date-filter {
-        flex-direction: column;
-    }
-    
-    .date-filter input, .date-filter button {
-        width: 100%;
+    .history-controls .btn {
+        width: auto;
+        min-width: 100px;
     }
 }
